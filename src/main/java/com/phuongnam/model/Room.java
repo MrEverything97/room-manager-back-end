@@ -9,7 +9,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int peopleNumber;
+    private Long peopleNumber = 0L;
     @ManyToOne
     private Member member;
     private Date dayIn;
@@ -36,11 +36,11 @@ public class Room {
         this.name = name;
     }
 
-    public int getPeopleNumber() {
+    public Long getPeopleNumber() {
         return peopleNumber;
     }
 
-    public void setPeopleNumber(int peopleNumber) {
+    public void setPeopleNumber(Long peopleNumber) {
         this.peopleNumber = peopleNumber;
     }
 
@@ -60,11 +60,11 @@ public class Room {
         this.dayIn = dayIn;
     }
 
-    public com.phuongnam.model.Orders getOrders() {
+    public Orders getOrders() {
         return Orders;
     }
 
-    public void setOrders(com.phuongnam.model.Orders orders) {
+    public void setOrders(Orders orders) {
         Orders = orders;
     }
 }

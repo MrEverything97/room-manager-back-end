@@ -5,12 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 @Entity
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int month;
+    private String month;
     private double powerNumber;
     private double waterNumber;
 
@@ -25,11 +26,11 @@ public class Orders {
         this.id = id;
     }
 
-    public int getMonth() {
+    public String  getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(String month) {
         this.month = month;
     }
 

@@ -1,8 +1,8 @@
 package com.phuongnam.restcontroller;
 
-import com.phuongnam.model.Member;
+
 import com.phuongnam.model.Room;
-import com.phuongnam.service.MemberService;
+
 import com.phuongnam.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class RoomRestController {
     @Autowired
     private RoomService roomService;
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity<List<Room>> getRoomList(){
         List<Room> roomList;
         roomList = roomService.findAll();
@@ -36,7 +36,7 @@ public class RoomRestController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Room> findSongById(@PathVariable Long id){
+    public ResponseEntity<Room> findRoomById(@PathVariable Long id){
         Optional<Room> room = roomService.findById(id);
         Room room1 = room.get();
         if (room1 == null){
@@ -46,7 +46,7 @@ public class RoomRestController {
             return new ResponseEntity<Room>(room1,HttpStatus.OK);
         }
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody Room room){
         Optional<Room> room1 = roomService.findById(id);
         Room room2 = room1.get();
@@ -60,6 +60,16 @@ public class RoomRestController {
             room2.setOrders(room.getOrders());
             roomService.save(room2);
             return new ResponseEntity<Room>(room2,HttpStatus.OK);
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Room> deleteRoom(@PathVariable Long id){
+        Optional<Room> room = roomService.findById(id);
+        if (room == null){
+            return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
+        }else {
+            roomService.remove(id);
+            return new ResponseEntity<Room>(HttpStatus.NO_CONTENT);
         }
     }
 }
