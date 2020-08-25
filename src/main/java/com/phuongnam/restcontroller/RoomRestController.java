@@ -56,7 +56,7 @@ public class RoomRestController {
             room2.setName(room.getName());
             room2.setPeopleNumber(room.getPeopleNumber());
             room2.setDayIn(room.getDayIn());
-            room2.setMember(room.getMember());
+            room2.setCustomer(room.getCustomer());
             room2.setOrders(room.getOrders());
             roomService.save(room2);
             return new ResponseEntity<Room>(room2,HttpStatus.OK);

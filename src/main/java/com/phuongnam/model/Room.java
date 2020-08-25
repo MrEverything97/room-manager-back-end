@@ -11,7 +11,7 @@ public class Room {
     private String name;
     private Long peopleNumber = 0L;
     @ManyToOne
-    private Member member;
+    private Customer customer;
     private Date dayIn;
 
     @ManyToOne
@@ -44,12 +44,12 @@ public class Room {
         this.peopleNumber = peopleNumber;
     }
 
-    public Member getMember() {
-        return member;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Date getDayIn() {

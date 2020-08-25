@@ -1,9 +1,6 @@
 package com.phuongnam.restcontroller;
 
-import com.phuongnam.model.Member;
 import com.phuongnam.model.Orders;
-import com.phuongnam.model.Orders;
-import com.phuongnam.service.MemberService;
 import com.phuongnam.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
