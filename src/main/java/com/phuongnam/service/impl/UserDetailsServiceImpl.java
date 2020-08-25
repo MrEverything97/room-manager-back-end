@@ -1,7 +1,7 @@
 package com.phuongnam.service.impl;
 
 import com.phuongnam.model.user.User;
-import com.phuongnam.model.user.UserPrinciple;
+import com.phuongnam.model.user.UserPrincipal;
 import com.phuongnam.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Transactional
@@ -25,6 +25,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
                         new UsernameNotFoundException("User Not Found with -> username or email : " + username)
                 );
 
-        return UserPrinciple.build(user);
+        return UserPrincipal.build(user);
     }
 }
