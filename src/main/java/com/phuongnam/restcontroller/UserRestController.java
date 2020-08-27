@@ -9,6 +9,7 @@ import com.phuongnam.report.request.RegisterForm;
 import com.phuongnam.report.response.JwtResponse;
 import com.phuongnam.repository.RoleRepository;
 import com.phuongnam.repository.UserRepository;
+import com.phuongnam.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 @CrossOrigin(origins = "*", maxAge = 84000)
 @RestController
 @RequestMapping("/api")
-public class AuthRestController {
+public class UserRestController {
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -34,6 +37,9 @@ public class AuthRestController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -61,20 +67,23 @@ public class AuthRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser( @RequestBody RegisterForm signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<String> registerUser( @RequestBody RegisterForm registerForm) {
+        if(userRepository.existsByUsername(registerForm.getUsername())) {
             return new ResponseEntity<String>("Fail -> Username is already taken!",
                     HttpStatus.BAD_REQUEST);
         }
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if(userRepository.existsByEmail(registerForm.getEmail())) {
             return new ResponseEntity<String>("Fail -> Email is already in use!",
                     HttpStatus.BAD_REQUEST);
         }
         // Creating user's account
-        User user = new User(signUpRequest.getLastName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(),encoder.encode(signUpRequest.getPassword()), signUpRequest.getFirstName(), signUpRequest.getLastName(),
-                signUpRequest.getPhoneNumber());
-        Set<String> strRoles = signUpRequest.getRole();
+        User user = new User(registerForm.getLastName(), registerForm.getUsername(),
+                registerForm.getEmail(),
+                encoder.encode(registerForm.getPassword()),
+                registerForm.getFirstName(),
+                registerForm.getLastName(),
+                registerForm.getPhoneNumber());
+        Set<String> strRoles = registerForm.getRole();
         Set<Role> roles = new HashSet<>();
 //        strRoles.forEach(role -> {
 //            switch(role) {
@@ -103,19 +112,16 @@ public class AuthRestController {
         return ResponseEntity.ok().body("User registered successfully!");
     }
 
-//    @PostMapping("/password")
-//    ResponseEntity<String> pssss(@RequestParam("checkPassword") String checkPassword, @RequestParam("newPassword") String newPassword, Long idUser){
-//
-//        Optional<User> user = userRepository.findByUsername(principal.getName());
-//        if (user.isPresent()){
-//            String passwordThenEndCode = passwordEncoder.encode(checkPassword);
-//
-//            if (passwordThenEndCode.equals()){
-//                return new ResponseEntity<>( passwordThenEndCode,HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//        }
-//
-//    }
+    @PutMapping("/change-password")
+    public ResponseEntity<Void> updateUser(@RequestParam("oldPassword") String oldPassword,
+                                           @RequestParam("newPassword") String newPassword,
+                                           Principal principal){
+        Optional<User> user = userRepository.findByUsername(principal.getName());
+        if (!user.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        User user1 = user.get();
+        userService.changePassword(user1, oldPassword, newPassword);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -2,14 +2,14 @@ package com.phuongnam.service.impl;
 
 import com.phuongnam.model.Customer;
 import com.phuongnam.repository.CustomerRepository;
-import com.phuongnam.service.CustormerService;
+import com.phuongnam.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service
-public class CustomerServiceImpl implements CustormerService {
+public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
     @Override

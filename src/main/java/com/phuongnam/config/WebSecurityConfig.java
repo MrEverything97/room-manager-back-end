@@ -55,10 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().
                 authorizeRequests()
-//                .antMatchers(HttpMethod.GET).permitAll()
-//                .antMatchers(HttpMethod.POST).permitAll()
-                .antMatchers(HttpMethod.POST, "/api/login").permitAll() // Request dạng POST tới "/login" luôn được phép truy cập dù là đã authenticated hay chưa
-                .anyRequest().authenticated();// Tất cả các request khác đều cần phải xác thực mới được truy cập
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers(HttpMethod.POST).permitAll()
+                .antMatchers("/api/login").permitAll(); // Request  tới "/login" luôn được phép truy cập dù là đã authenticated hay chưa
+//                .anyRequest().authenticated();// Tất cả các request khác đều cần phải xác thực mới được truy cập
 
         // Thêm một lớp Filter kiểm tra jwt
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
