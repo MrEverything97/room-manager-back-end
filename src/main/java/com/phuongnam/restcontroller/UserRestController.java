@@ -108,7 +108,6 @@ public class UserRestController {
         roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
-
         return ResponseEntity.ok().body("User registered successfully!");
     }
 
